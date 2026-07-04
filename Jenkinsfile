@@ -19,13 +19,16 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('sonarqube') {
-                    sh """
-                    ${SCANNER_HOME}/bin/sonar-scanner \
-                    -Dsonar.projectKey=student-result-management-system \
-                    -Dsonar.projectName=student-result-management-system \
-                    -Dsonar.sources=. \
-                    -Dsonar.sourceEncoding=UTF-8
-                    """
+                    withCredentials([string(credentialsId: 'sonar-tokrn', variable: 'SONAR_TOKEN')]) {
+                        sh """
+                        ${SCANNER_HOME}/bin/sonar-scanner \
+                        -Dsonar.projectKey=student-result-management-system \
+                        -Dsonar.projectName=student-result-management-system \
+                        -Dsonar.sources=. \
+                        -Dsonar.sourceEncoding=UTF-8 \
+                        -Dsonar.login=$SONAR_TOKEN
+                        """
+                    }
                 }
             }
         }
@@ -41,6 +44,15 @@ pipeline {
                 sh 'docker rm -f student-backend || true'
                 sh 'docker run -d --name student-backend -p 5001:5001 student-backend:latest'
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed!'
         }
     }
 }
