@@ -1,26 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <h2>Student Dashboard</h2>
 
+<input type="text" id="reg" placeholder="Enter Register Number">
+<br><br>
+
 <button onclick="getResult()">View Result</button>
 
-<p id="result"></p>
+<h3 id="result"></h3>
 
 <script>
 function getResult() {
-  fetch("http://127.0.0.1:5001/results/101")
-  .then(res => res.json())
-  .then(data => {
-    document.getElementById("result").innerText =
-      "Name: " + data.name +
-      " | Total: " + data.total;
-  })
+
+    let reg = document.getElementById("reg").value;
+
+    fetch("http://3.26.166.104:5000/results/" + reg)
+    .then(res => res.json())
+    .then(data => {
+
+        if(data.message){
+            document.getElementById("result").innerHTML=data.message;
+        }else{
+            document.getElementById("result").innerHTML=
+            "Name : " + data.name +
+            "<br>Register No : " + data.register_no +
+            "<br>Total : " + data.total;
+        }
+
+    });
+
 }
 </script>
 

@@ -1,5 +1,5 @@
 function login() {
-  fetch("http://127.0.0.1:5001/login", {
+  fetch("http://3.26.166.104:5000/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -14,11 +14,11 @@ function login() {
     document.getElementById("msg").innerText = data.message;
 
     if (data.message === "Login Successful") {
-      window.location.href = "dashboard.html";
+      window.location.href = "admin.html";
     }
   })
   .catch(err => {
-    document.getElementById("msg").innerText = "Backend connection error";
+    document.getElementById("msg").innerText = "Backend Connection Error";
     console.log(err);
   });
 }

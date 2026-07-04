@@ -1,5 +1,5 @@
 function addStudent() {
-    fetch("http://127.0.0.1:5001/students", {
+    fetch("http://3.26.166.104:5000/students", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -10,18 +10,14 @@ function addStudent() {
             department: document.getElementById("dept").value
         })
     })
-    .then(response => response.json())
+    .then(res => res.json())
     .then(data => {
         document.getElementById("msg").innerText = data.message;
-    })
-    .catch(error => {
-        document.getElementById("msg").innerText = "Backend Connection Error";
-        console.log(error);
     });
 }
 
 function updateMarks() {
-    fetch("http://127.0.0.1:5001/marks/" + document.getElementById("markReg").value, {
+    fetch("http://3.26.166.104:5000/marks/" + document.getElementById("markReg").value, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
@@ -31,12 +27,8 @@ function updateMarks() {
             java: Number(document.getElementById("java").value)
         })
     })
-    .then(response => response.json())
+    .then(res => res.json())
     .then(data => {
         document.getElementById("msg").innerText = data.message;
-    })
-    .catch(error => {
-        document.getElementById("msg").innerText = "Backend Connection Error";
-        console.log(error);
     });
 }
