@@ -4,6 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = "student-backend"
         DOCKER_TAG = "latest"
+        SCANNER_HOME = tool 'SonarScanner'
     }
 
     stages {
@@ -18,7 +19,13 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('sonarqube') {
-                    sh 'echo "Running SonarQube Scan..."'
+                    sh """
+                    ${SCANNER_HOME}/bin/sonar-scanner \
+                    -Dsonar.projectKey=student-result-management-system \
+                    -Dsonar.projectName=student-result-management-system \
+                    -Dsonar.sources=. \
+                    -Dsonar.sourceEncoding=UTF-8
+                    """
                 }
             }
         }
@@ -31,7 +38,8 @@ pipeline {
 
         stage('Run Container') {
             steps {
-                sh 'docker run -d -p 5001:5001 student-backend:latest || true'
+                sh 'docker rm -f student-backend || true'
+                sh 'docker run -d --name student-backend -p 5001:5001 student-backend:latest'
             }
         }
     }
