@@ -8,4 +8,4 @@ RUN pip install flask
 
 EXPOSE 5001
 
-CMD ["python", "app.py"]
+CMD ["python", "backend/app.py"]
